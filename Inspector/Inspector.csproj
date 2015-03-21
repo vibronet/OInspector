@@ -7,8 +7,8 @@
     <ProjectGuid>{AD4C38A3-EABF-4CAE-8C24-829E2DE69A9F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Inspector</RootNamespace>
-    <AssemblyName>Inspector</AssemblyName>
+    <RootNamespace>OpenIDConnect.Inspector</RootNamespace>
+    <AssemblyName>OpenIDConnect.Inspector</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

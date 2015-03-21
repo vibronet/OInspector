@@ -9,6 +9,7 @@
 @REM %cd% is a dynamic variable that points to the current directory
 @set "REPOROOT=%cd%"
 @set "NUGETROOT=%REPOROOT%\packages"
+@set "EXTERNAL=%REPOROOT%\.external"
 @set "PATH=%REPOROOT%\.envy;%NUGETROOT%;%PATH%"
 
 @REM TODO: Redirect build output into the specified location

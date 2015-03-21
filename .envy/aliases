@@ -1,0 +1,7 @@
+..=cd ..
+...=cd ..\..
+status=git status
+root=cd /d %REPOROOT%
+aliases=notepad %REPOROOT%\.envy\aliases
+binaries=start %BUILD_OUTPUT%
+nuke=git clean -xfd

@@ -36,11 +36,24 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <!-- External references -->
     <Reference Include="Fiddler">
       <HintPath>$(EXTERNAL)\Fiddler\Fiddler.exe</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Compression.Formats.v5.4">
+      <HintPath>$(EXTERNAL)\Fiddler\Xceed.Compression.Formats.v5.4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Compression.v5.4">
+      <HintPath>$(EXTERNAL)\Fiddler\Xceed.Compression.v5.4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.FileSystem.v5.4">
+      <HintPath>$(EXTERNAL)\Fiddler\Xceed.FileSystem.v5.4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Zip.v5.4">
+      <HintPath>$(EXTERNAL)\Fiddler\Xceed.Zip.v5.4.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Choose>
@@ -56,14 +69,24 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="OpenIDConnectInspector\InspectorTestSuite.cs" />
+    <Compile Include="Common\StringExtensions.cs" />
+    <Compile Include="Common\TestDependencyResolver.cs" />
+    <Compile Include="OpenIDConnectRequestInspector\HeadersTestSuite.cs" />
+    <Compile Include="OpenIDConnectRequestInspector\InspectorTestSuite.cs" />
+    <Compile Include="OpenIDConnectRequestInspector\TestableOpenIDConnectRequestInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestBootstrap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(REPOROOT)\Inspector\Inspector.csproj">
       <Project>{ad4c38a3-eabf-4cae-8c24-829e2de69a9f}</Project>
       <Name>Inspector</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="testSamples\loginRequest.saz">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

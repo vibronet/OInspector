@@ -12,7 +12,7 @@
     public class TestableOpenIDConnectRequestInspector : OpenIDConnect.Inspector.OpenIDConnectRequestInspector
     {
         /// <summary>
-        /// Wrapper the inner control used by the test runtime.
+        /// Wrapper of the inner control used by the test runtime.
         /// </summary>
         public SimpleTextView TextView
         {
@@ -20,7 +20,7 @@
         }
 
         /// <summary>
-        /// Wrapper the inner control used by the test runtime.
+        /// Wrapper of the inner control used by the test runtime.
         /// </summary>
         public TabPage TabPage
         {
@@ -28,12 +28,21 @@
         }
 
         /// <summary>
-        /// Wrapper to call to AssignSession(oSession) using the specified SAZ archive.
+        /// Wrapper for the test runtime to call to AssignSession(oSession) using the specified SAZ archive.
         /// </summary>
         public void AssignSession(string filename)
         {
             var session = this.LoadFirstSessionOnly(filename);
             this.AssignSession(session);
+        }
+
+        /// <summary>
+        /// Wrapper for the test runtime to call to ScoreForSession(oSession) using the specified SAZ archive.
+        /// </summary>
+        public int ScoreForSession(string filename)
+        {
+            var session = this.LoadFirstSessionOnly(filename);
+            return this.ScoreForSession(session);
         }
 
         /// <summary>

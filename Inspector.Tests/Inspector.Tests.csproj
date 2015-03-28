@@ -55,6 +55,12 @@
     <Reference Include="Xceed.Zip.v5.4">
       <HintPath>$(EXTERNAL)\Fiddler\Xceed.Zip.v5.4.dll</HintPath>
     </Reference>
+    <Reference Include="Standard">
+      <HintPath>$(EXTERNAL)\Fiddler\Standard.dll</HintPath>
+    </Reference>
+    <Reference Include="Be.Windows.Forms.HexBox">
+      <HintPath>$(EXTERNAL)\Fiddler\Be.Windows.Forms.HexBox.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">

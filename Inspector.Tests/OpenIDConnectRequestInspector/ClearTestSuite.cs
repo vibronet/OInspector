@@ -10,23 +10,6 @@
     [TestClass]
     public class ClearTestSuite
     {
-        /// <summary>
-        /// Validates whether the simple text view control's text property has been reset to its default state.
-        /// </summary>
-        [TestMethod]
-        public void ShouldCleanupAllText()
-        {
-            // Arrange
-            var expected = "";
-            var actual = default(string);
-
-            // Act
-            this.Act(inspectorSpy: (i) => actual = i.TextView.Text);
-
-            // Assert
-            Assert.AreEqual(expected, actual);
-        }
-
         private void Act(Action<TestableOpenIDConnectRequestInspector> inspectorSpy)
         {
             var inspector = new TestableOpenIDConnectRequestInspector();

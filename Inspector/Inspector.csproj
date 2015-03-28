@@ -45,6 +45,12 @@
     <Reference Include="Fiddler">
       <HintPath>$(EXTERNAL)\Fiddler\Fiddler.exe</HintPath>
     </Reference>
+    <Reference Include="Standard">
+      <HintPath>$(EXTERNAL)\Fiddler\Standard.dll</HintPath>
+    </Reference>
+    <Reference Include="Be.Windows.Forms.HexBox">
+      <HintPath>$(EXTERNAL)\Fiddler\Be.Windows.Forms.HexBox.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\SimpleTextView.cs">

@@ -14,14 +14,6 @@
         /// <summary>
         /// Wrapper of the inner control used by the test runtime.
         /// </summary>
-        public SimpleTextView TextView
-        {
-            get { return this.textView; }
-        }
-
-        /// <summary>
-        /// Wrapper of the inner control used by the test runtime.
-        /// </summary>
         public TabPage TabPage
         {
             get { return this.tabPage; }

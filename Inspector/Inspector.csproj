@@ -59,8 +59,16 @@
     <Compile Include="Controls\SimpleTextView.Designer.cs">
       <DependentUpon>SimpleTextView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WebFormEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WebFormEditor.Designer.cs">
+      <DependentUpon>WebFormEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\SessionExtensions.cs" />
     <Compile Include="IDependencyResolver.cs" />
     <Compile Include="OpenIDConnectRequestInspector.cs" />
+    <Compile Include="OpenIDConnectResponseInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

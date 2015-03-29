@@ -6,6 +6,7 @@
 
     public class OpenIDConnectRequestInspector : Standard.RequestWebForm
     {
+        const int OidcSessionScore = 70;
         protected TabPage tabPage;
 
         /// <summary>
@@ -43,7 +44,8 @@
             // Score ourselves at 70 when the path matches Authorize endpoint
             if (oSession.PathAndQuery.IndexOf("/oauth2/authorize") > -1)
             {
-                return 70;
+                oSession.MarkAsOidcSession();
+                return OidcSessionScore;
             }
 
             return base.ScoreForSession(oSession);

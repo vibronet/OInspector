@@ -1,15 +1,14 @@
-﻿namespace OpenIDConnect.Inspector.Tests.OpenIDConnectRequestInspector
+﻿namespace OpenIDConnect.Inspector.Tests.ResponseInspector
 {
-    using System.IO;
-    using System.Linq;
-    using System.Windows.Forms;
-    using Common;
-    using Fiddler;
+    using System.Collections.Specialized;
+using Common;
+using Fiddler;
+using OpenIDConnectRequestInspector;
 
     /// <summary>
-    /// Testable implementation of OpenIDConnectRequestInspector.
+    /// Testable implementation of OpenIDConnectResponseInspector.
     /// </summary>
-    public class TestableOpenIDConnectRequestInspector : OpenIDConnect.Inspector.OpenIDConnectRequestInspector
+    public class TestableResponseInspector : OpenIDConnectResponseInspector
     {
         /// <summary>
         /// Gets the session being inspected during the current test run.
@@ -17,11 +16,12 @@
         public Session Session { get; private set; }
 
         /// <summary>
-        /// Wrapper of the inner control used by the test runtime.
+        /// Wrapper for the test runtime to 
         /// </summary>
-        public TabPage TabPage
+        /// <returns></returns>
+        public NameValueCollection GetAllGridRows()
         {
-            get { return this.tabPage; }
+            return this.gridView.GetAllGridRows();
         }
 
         /// <summary>
@@ -39,7 +39,8 @@
         public int ScoreForSession(string filename)
         {
             this.Session = this.LoadFirstSessionOnly(filename);
-            return this.ScoreForSession(this.Session);
+            this.SimulateInspectorsPipeline(this.Session);
+            return base.ScoreForSession(this.Session);
         }
 
         /// <summary>
@@ -50,6 +51,15 @@
             var resolver = new TestDependencyResolver();
             var loader = resolver.GetService<SessionLoader>();
             return loader.LoadFirstSessionOnly(filename);
+        }
+
+        /// <summary>
+        /// Simulates inspectors pipeline to process the session in cooperation with the request inspector.
+        /// </summary>
+        private void SimulateInspectorsPipeline(Session session)
+        {
+            var inspector = new TestableOpenIDConnectRequestInspector();
+            inspector.ScoreForSession(session);
         }
     }
 }

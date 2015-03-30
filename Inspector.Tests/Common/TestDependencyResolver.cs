@@ -19,6 +19,11 @@
                 return this.InstantiateSAZProvider() as T;
             }
 
+            if (typeof(T) == typeof(SessionLoader))
+            {
+                return new SessionLoader() as T;
+            }
+
             return default(T);
         }
 

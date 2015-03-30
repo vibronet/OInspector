@@ -1,6 +1,7 @@
 ﻿namespace OpenIDConnect.Inspector
 {
-    using Fiddler;
+    using System.Collections.Specialized;
+using Fiddler;
 
     /// <summary>
     /// Session object extension methods.
@@ -9,9 +10,20 @@
     {
         const string OidcFlag = "oidc";
 
+        public static NameValueCollection GetQueryString(this Session oSession)
+        {
+            var indexOf = oSession.PathAndQuery.IndexOf("?") + 1;
+            var queryString = oSession.PathAndQuery.Substring(indexOf);
+            return Utilities.ParseQueryString(queryString);
+        }
+
         public static bool IsAuthorizationCodeResponse(this Session oSession)
         {
-            return true;
+            return oSession.utilFindInResponse("form method=\"POST\"", bCaseSensitive: false) > -1
+                && oSession.utilFindInResponse("name=\"code\"", bCaseSensitive: false) > -1
+                && oSession.utilFindInResponse("name=\"id_token\"", bCaseSensitive: false) > -1
+                && oSession.utilFindInResponse("name=\"state\"", bCaseSensitive: false) > -1
+                && oSession.utilFindInResponse("name=\"session_state\"", bCaseSensitive: false) > -1;
         }
 
         /// <summary>

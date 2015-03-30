@@ -1,6 +1,7 @@
 ﻿namespace OpenIDConnect.Inspector.Controls
 {
     using System;
+    using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Drawing;
     using System.Windows.Forms;
@@ -96,6 +97,25 @@
             {
                 this.gridQueryString.ReadOnly = value;
                 this.gridQueryString.RowHeadersVisible = this.gridQueryString.AllowUserToAddRows = this.gridQueryString.AllowUserToDeleteRows = !value;
+            }
+        }
+
+        public NameValueCollection GetAllGridRows()
+        {
+            var map = new NameValueCollection();
+            foreach (DataGridViewRow gridRow in this.gridQueryString.Rows)
+            {
+                map.Add(gridRow.Cells[0].Value.ToString(), gridRow.Cells[1].Value.ToString());
+            }
+
+            return map;
+        }
+
+        public void Append(NameValueCollection dataSource)
+        {
+            foreach (var key in dataSource.AllKeys)
+            {
+                this.gridQueryString.Rows.Add(key, dataSource[key]);
             }
         }
     }

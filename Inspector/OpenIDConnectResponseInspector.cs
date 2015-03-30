@@ -8,6 +8,8 @@
     using System.Windows.Forms;
     using Fiddler;
     using Controls;
+    using System.Collections.Specialized;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// OpenID Connect response inspector.
@@ -53,7 +55,53 @@
 
         private void DisplaySessionContent(Session oSession)
         {
-            
+            var dataSource = default(NameValueCollection);
+            if (oSession.IsAuthorizationCodeResponse())
+            {
+                dataSource = this.ParseAuthorizationCodeResponse(oSession);
+            }
+
+            this.gridView.Append(dataSource);
+        }
+
+        private NameValueCollection ParseAuthorizationCodeResponse(Session oSession)
+        {
+            var map = new NameValueCollection();
+            var bodyString = oSession.GetResponseBodyAsString();
+            var startInputOf = bodyString.IndexOf("<input");
+            var endInputOf = bodyString.IndexOf("/>", startInputOf);
+
+            while (startInputOf > -1 && endInputOf > -1)
+            {
+                var tagString = bodyString.Substring(startInputOf, (endInputOf + 2) - startInputOf);
+
+                var nameOf = tagString.IndexOf(" name");
+                if (nameOf == -1)
+                {
+                    // We're done with this form
+                    break;
+                }
+
+                var startQuoteOf = tagString.IndexOf('"', nameOf) + 1;
+                var endQuoteOf = tagString.IndexOf('"', startQuoteOf);
+
+                // We've just got value of name sttribute
+                var name = tagString.Substring(startQuoteOf, endQuoteOf - startQuoteOf);
+
+                var valueOf = tagString.IndexOf(" value", endQuoteOf);
+                startQuoteOf = tagString.IndexOf('"', valueOf) + 1;
+                endQuoteOf = tagString.IndexOf('"', startQuoteOf);
+
+                // We've just got value of value sttribute
+                var value = tagString.Substring(startQuoteOf, endQuoteOf - startQuoteOf);
+
+                map.Add(name, value);
+
+                startInputOf = bodyString.IndexOf("<input", endInputOf);
+                endInputOf = bodyString.IndexOf("/>", startInputOf);
+            }
+
+            return map;
         }
 
         private void EnsureReady()
@@ -61,6 +109,8 @@
             if (this.gridView == null)
             {
                 this.gridView = new WebFormEditor();
+                this.tabPage.Controls.Add(this.gridView);
+                this.gridView.Dock = DockStyle.Fill;
             }
         }
 

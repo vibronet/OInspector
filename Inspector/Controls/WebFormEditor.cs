@@ -100,6 +100,11 @@
             }
         }
 
+        public int GetAllGridRowsCount()
+        {
+            return this.gridQueryString.Rows.Count;
+        }
+
         public NameValueCollection GetAllGridRows()
         {
             var map = new NameValueCollection();
@@ -109,6 +114,11 @@
             }
 
             return map;
+        }
+
+        public void Clear()
+        {
+            this.gridQueryString.Rows.Clear();
         }
 
         public void Append(NameValueCollection dataSource)

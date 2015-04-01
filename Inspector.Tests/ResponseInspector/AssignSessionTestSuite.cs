@@ -10,6 +10,8 @@
     [TestClass]
     public class AssignSessionTestSuite
     {
+        const string testSample = @".\testSamples\oidc-authorization-code-response.saz";
+
         /// <summary>
         /// Validates whether the grid view contains expected session_state value.
         /// </summary>
@@ -31,11 +33,33 @@
             Assert.AreEqual(expected, actual);
         }
 
+        /// <summary>
+        /// Validates whether AssignSession method takes care of wiping out the previous state.
+        /// </summary>
+        [TestMethod]
+        public void ShouldWipeOutPreviousStateWhenAssignNewSession()
+        {
+            // Arrange
+            var expected = 4;
+            var actual = -1;
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                // Exercise the scenario again to compare the outcome
+                i.AssignSession(testSample);
+                actual = i.GetAllGridRowsCount();
+            });
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
         private void Act(Action<TestableResponseInspector> inspectorSpy)
         {
             var inspector = new TestableResponseInspector();
             inspector.AddToTab(new TabPage());
-            inspector.AssignSession(@".\testSamples\oidc-authorization-code-response.saz");
+            inspector.AssignSession(testSample);
             inspectorSpy(inspector);
         }
     }

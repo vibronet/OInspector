@@ -16,9 +16,16 @@ using OpenIDConnectRequestInspector;
         public Session Session { get; private set; }
 
         /// <summary>
-        /// Wrapper for the test runtime to 
+        /// Wrapper for the test runtime to get count of all grid rows.
         /// </summary>
-        /// <returns></returns>
+        public int GetAllGridRowsCount()
+        {
+            return this.gridView.GetAllGridRowsCount();
+        }
+
+        /// <summary>
+        /// Wrapper for the test runtime to get all grid rows as 'name => value' collection.
+        /// </summary>
         public NameValueCollection GetAllGridRows()
         {
             return this.gridView.GetAllGridRows();

@@ -44,6 +44,7 @@
         /// </summary>
         public override void AssignSession(Session oSession)
         {
+            this.Clear();
             base.AssignSession(oSession);
 
             if (this.ScoreForSession(oSession) == OidcSessionScore)
@@ -142,9 +143,15 @@
 
         #region IBaseInspector2 Members
 
+        /// <summary>
+        /// Wipes out state of all child controls.
+        /// </summary>
         public void Clear()
         {
-            throw new NotImplementedException();
+            if (this.gridView != null)
+            {
+                this.gridView.Clear();
+            }
         }
 
         public bool bDirty

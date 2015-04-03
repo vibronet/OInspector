@@ -10,3 +10,4 @@ unstage=git reset HEAD $*
 gl=git log --all --graph --decorate --format=format:"%C(auto)%h%d %C(bold white)%s%C(reset) %C(dim)%C(white)=> by %an %C(green)(%ar)" $*
 o=notepad $*
 deploy=powershell.exe -File %REPOROOT%\tools\deploy.ps1 $*
+jwtdecode=powershell.exe -File %REPOROOT%\tools\jwt-decode.ps1 $*

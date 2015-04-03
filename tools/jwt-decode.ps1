@@ -1,3 +1,41 @@
+# README
+# The script takes jwt string as an input parameter and also can read text from the clipboard if no input is provided.
+# (very common use case when you copy/paste jwt strings from Fiddler).
+# Example output:
+#
+# header ~> {
+#     "typ": "JWT",
+#     ...
+# }
+#
+# payload ~> {
+#     "iss": "https://xxx.vvv.com/issuer",
+#     ...
+# }
+
+# Script also is very flexible and makes use of artefacts, such as 'access_token=xyxyxyx' or 'id_token=zczczczczc' and 
+# modifies the output accordingly to maximize the readability.
+# Example output:
+#
+# (access_token) header ~> {
+#     "typ": "JWT",
+#     ...
+# }
+#
+# (access_token) payload ~> {
+#     "iss": "https://xxx.vvv.com/issuer",
+#     ...
+# }
+
+# USAGE: 
+# You can call the script directly from PowerShell or you can leverage envy's 'jwtdecode' alias which will save you
+# dozens of keystrokes and it's available anywhere in the source tree.
+# Example (call script & provide input): .\jwt-decode.ps1 -inputString "xxxxxx"
+# Example (call call & use clipboard): .\jwt-decode.ps1
+#
+# Example (using alias & provide input): jwtdecode "xcxcxcxcxcx"
+# Example (using alias & use clipboard): jwtdecode
+
 param([String]$inputString = $null)
 
 function Get-ClipboardText()
@@ -75,5 +113,5 @@ $assembly = [Reflection.Assembly]::LoadFile("${env:NUGETROOT}\System.IdentityMod
 # decode jwt string using the library
 $jwt = [System.IdentityModel.Tokens.JwtSecurityToken] $inputString
 
-# render jwt section
+# render jwt
 Format-JwtEncodedString -jwtEncodedString $jwt.ToString() -typeString $typeString

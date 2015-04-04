@@ -11,6 +11,11 @@ Copy-Item -Path "$env:REPOROOT\Inspector\bin\Debug\OpenIDConnect.Inspector*" `
           -Destination "${env:ProgramFiles(x86)}\Fiddler2\Inspectors" `
           -Force
 
+# Turns out to be name of a test sample in the source tree
+if ([IO.File]::Exists($testSample) -eq $false) {
+    $testSample = "$env:REPOROOT\Inspector.Tests\testSamples\$testSample.saz"
+}
+
 # See the following link for more command-line arguments: http://fiddler.wikidot.com/commandlineparams
 Start-Process -FilePath "${env:ProgramFiles(x86)}\Fiddler2\Fiddler.exe" `
-              -ArgumentList @("-viewer", "-noattach", "$env:REPOROOT\Inspector.Tests\testSamples\$testSample.saz")
+              -ArgumentList @("-viewer", "-noattach", $testSample)

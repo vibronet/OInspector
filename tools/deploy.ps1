@@ -1,4 +1,4 @@
-﻿param([String]$testSample = "loginRequest")
+﻿param([String]$testSample = "oidc-authorization-code-request")
 
 # Shutdown Fiddler first to be able to copy the plugin
 Stop-Process -Name "Fiddler" -Force -ErrorAction SilentlyContinue

@@ -51,6 +51,9 @@
     <Reference Include="Be.Windows.Forms.HexBox">
       <HintPath>$(EXTERNAL)\Fiddler\Be.Windows.Forms.HexBox.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(NUGETROOT)\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\SimpleTextView.cs">
@@ -65,6 +68,7 @@
     <Compile Include="Controls\WebFormEditor.Designer.cs">
       <DependentUpon>WebFormEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\SessionExtensions.cs" />
     <Compile Include="IDependencyResolver.cs" />
     <Compile Include="OpenIDConnectRequestInspector.cs" />
@@ -75,6 +79,9 @@
     <EmbeddedResource Include="Controls\SimpleTextView.resx">
       <DependentUpon>SimpleTextView.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -14,7 +14,7 @@
         {
             var inspector = new TestableOpenIDConnectRequestInspector();
             inspector.AddToTab(new TabPage());
-            inspector.AssignSession(@".\testSamples\loginRequest.saz");
+            inspector.AssignSession(@".\testSamples\oidc-authorization-code-request.saz");
             inspector.Clear();
             inspectorSpy(inspector);
         }

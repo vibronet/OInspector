@@ -1,9 +1,9 @@
 ﻿namespace OpenIDConnect.Inspector.Tests.ResponseInspector
 {
     using System.Collections.Specialized;
-using Common;
-using Fiddler;
-using OpenIDConnectRequestInspector;
+    using Common;
+    using Fiddler;
+    using OpenIDConnectRequestInspector;
 
     /// <summary>
     /// Testable implementation of OpenIDConnectResponseInspector.
@@ -28,6 +28,11 @@ using OpenIDConnectRequestInspector;
         /// </summary>
         public NameValueCollection GetAllGridRows()
         {
+            if (this.gridView == null)
+            {
+                return new NameValueCollection();
+            }
+
             return this.gridView.GetAllGridRows();
         }
 

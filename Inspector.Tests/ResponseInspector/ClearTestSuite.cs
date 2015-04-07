@@ -34,7 +34,7 @@
         {
             var inspector = new TestableResponseInspector();
             inspector.AddToTab(new TabPage());
-            inspector.AssignSession(@".\testSamples\oidc-authorization-code-response.saz");
+            inspector.AssignSession(@".\testSamples\oidc-authorization-code-response-cc.saz");
             inspector.Clear();
             inspectorSpy(inspector);
         }

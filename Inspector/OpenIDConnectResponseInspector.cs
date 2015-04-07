@@ -10,6 +10,7 @@
     using Controls;
     using System.Collections.Specialized;
     using System.Text.RegularExpressions;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// OpenID Connect response inspector.
@@ -54,15 +55,82 @@
             }
         }
 
+        /// <summary>
+        /// Scores how relevant the specified session is for the given inspector.
+        /// </summary>
+        public override int ScoreForSession(Session oSession)
+        {
+            if (oSession.IsOidcSession()
+                || oSession.IsAuthorizationCodeResponse()
+                || oSession.IsAuthorizationGrantResponse())
+            {
+                return OidcSessionScore;
+            }
+
+            return base.ScoreForSession(oSession);
+        }
+
+        #endregion
+
+        #region IResponseInspector2 Members
+
+        public HTTPResponseHeaders headers { get; set; }
+
+        #endregion
+
+        #region IBaseInspector2 Members
+
+        /// <summary>
+        /// Wipes out state of all child controls.
+        /// </summary>
+        public void Clear()
+        {
+            if (this.gridView != null)
+            {
+                this.gridView.Clear();
+            }
+        }
+
+        public bool bDirty
+        {
+            get { return false; }
+        }
+
+        public bool bReadOnly { get; set; }
+
+        public byte[] body { get; set; }
+
+        #endregion
+
         private void DisplaySessionContent(Session oSession)
         {
-            var dataSource = default(NameValueCollection);
-            if (oSession.IsAuthorizationCodeResponse())
+            var dataSource = new NameValueCollection();
+            if (oSession.IsAuthorizationCodeResponse_ConfidentialClient())
             {
                 dataSource = this.ParseAuthorizationCodeResponse(oSession);
             }
+            else if (oSession.IsAuthorizationCodeResponse_NativeClient())
+            {
+                dataSource = this.ParseAuthorizationCodeResponse_NativeClient(oSession);
+            }
+            else if (oSession.IsAuthorizationGrantResponse())
+            {
+                dataSource = this.ParseAuthorizationGrantResponse(oSession);
+            }
 
             this.gridView.Append(dataSource);
+        }
+
+        private NameValueCollection ParseAuthorizationGrantResponse(Session oSession)
+        {
+            var bodyString = oSession.GetResponseBodyAsString();
+            var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(bodyString);
+            return json.AsNameValueCollection();
+        }
+
+        private NameValueCollection ParseAuthorizationCodeResponse_NativeClient(Session oSession)
+        {
+            return oSession.GetLocationQueryString();
         }
 
         private NameValueCollection ParseAuthorizationCodeResponse(Session oSession)
@@ -114,55 +182,5 @@
                 this.gridView.Dock = DockStyle.Fill;
             }
         }
-
-        public override int ScoreForContentType(string sMIMEType)
-        {
-            return base.ScoreForContentType(sMIMEType);
-        }
-
-        /// <summary>
-        /// Scores how relevant the specified session is for the given inspector.
-        /// </summary>
-        public override int ScoreForSession(Session oSession)
-        {
-            if (oSession.IsOidcSession() || oSession.IsAuthorizationCodeResponse())
-            {
-                return OidcSessionScore;
-            }
-
-            return base.ScoreForSession(oSession);
-        }
-
-        #endregion
-
-        #region IResponseInspector2 Members
-
-        public HTTPResponseHeaders headers { get; set; }
-
-        #endregion
-
-        #region IBaseInspector2 Members
-
-        /// <summary>
-        /// Wipes out state of all child controls.
-        /// </summary>
-        public void Clear()
-        {
-            if (this.gridView != null)
-            {
-                this.gridView.Clear();
-            }
-        }
-
-        public bool bDirty
-        {
-            get { return false; }
-        }
-
-        public bool bReadOnly { get; set; }
-
-        public byte[] body { get; set; }
-
-        #endregion
     }
 }

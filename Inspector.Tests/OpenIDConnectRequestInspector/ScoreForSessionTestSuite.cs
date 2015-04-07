@@ -45,7 +45,7 @@
         private int Act(Action<TestableOpenIDConnectRequestInspector> inspectorSpy)
         {
             var inspector = new TestableOpenIDConnectRequestInspector();
-            var sessionScore = inspector.ScoreForSession(@".\testSamples\loginRequest.saz");
+            var sessionScore = inspector.ScoreForSession(@".\testSamples\oidc-authorization-code-request.saz");
             inspectorSpy(inspector);
             return sessionScore;
         }

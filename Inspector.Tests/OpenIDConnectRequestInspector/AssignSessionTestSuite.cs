@@ -12,7 +12,7 @@
     [TestClass]
     public class AssignSessionTestSuite
     {
-        private const string testSample = @".\testSamples\loginRequest.saz";
+        private const string testSample = @".\testSamples\oidc-authorization-code-request.saz";
 
         private void Act(Action<TestableOpenIDConnectRequestInspector> inspectorSpy)
         {

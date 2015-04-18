@@ -12,3 +12,4 @@ o=notepad $*
 deploy=powershell.exe -File %REPOROOT%\tools\deploy.ps1 $*
 jwtdecode=powershell.exe -File %REPOROOT%\tools\jwt-decode.ps1 $*
 mstest=%EXTERNAL%\mstest\mstest.exe $*
+jwtcleanpii=%EXTERNAL%\jwt.cleanpii\jwt.cleanpii.exe $*

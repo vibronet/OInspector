@@ -1,15 +1,12 @@
 ﻿namespace OpenIDConnect.Inspector
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Windows.Forms;
-    using Fiddler;
-    using Controls;
     using System.Collections.Specialized;
-    using System.Text.RegularExpressions;
+    using System.IdentityModel.Tokens;
+    using System.Security.Claims;
+    using System.Windows.Forms;
+    using Controls;
+    using Fiddler;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -118,7 +115,34 @@
                 dataSource = this.ParseAuthorizationGrantResponse(oSession);
             }
 
+            this.ExpandJwtTokenStringIfAny(dataSource);
+
             this.gridView.Append(dataSource);
+        }
+
+        private void ExpandJwtTokenStringIfAny(NameValueCollection dataSource)
+        {
+            var jwtEncodedString = dataSource.Get("id_token");
+            if (!string.IsNullOrWhiteSpace(jwtEncodedString))
+            {
+                dataSource.Remove("id_token");
+                var jwt = new JwtSecurityToken(jwtEncodedString);
+                foreach (var claim in jwt.Claims)
+                {
+                    this.SafeAddClaimValue(dataSource, claim, "id_token");
+                }
+            }
+        }
+
+        private void SafeAddClaimValue(NameValueCollection dataSource, Claim claim, string formatString)
+        {
+            if (claim == null)
+            {
+                return;
+            }
+
+            var keyName = string.Concat(formatString, ".", claim.Type);
+            dataSource.Add(keyName, claim.Value);
         }
 
         private NameValueCollection ParseAuthorizationGrantResponse(Session oSession)

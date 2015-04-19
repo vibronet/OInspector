@@ -26,27 +26,6 @@
         const string testSampleAuthorizationGrantNc = @".\testSamples\oidc-authorization-code-grant-nc.saz";
 
         /// <summary>
-        /// Validates whether the grid view contains expected access_token value with native client response type.
-        /// </summary>
-        [TestMethod]
-        public void ShouldShowExpectedAccessToken_NativeClient()
-        {
-            // Arrange
-            var expected = "test_jwt_access_token_string_goes_here";
-            var actual = default(string);
-
-            // Act
-            this.Act(inspectorSpy: (i) =>
-            {
-                var gridRows = i.GetAllGridRows();
-                actual = gridRows["access_token"];
-            }, testSample: testSampleAuthorizationGrantNc);
-
-            // Assert
-            Assert.AreEqual(expected, actual);
-        }
-
-        /// <summary>
         /// Validates whether the grid view contains expected session_state value with native client response type.
         /// </summary>
         [TestMethod]
@@ -85,7 +64,70 @@
             }, testSample: testSampleCc);
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            StringAssert.Equals(expected, actual);
+        }
+
+        /// <summary>
+        /// Validates whether the grid view contains expected id_token.aud value.
+        /// </summary>
+        [TestMethod]
+        public void ShouldShowExpectedIdentityToken_AudienceClaim_ConfidentialClient()
+        {
+            // Arrange
+            var expected = "00000000-0000-0000-0000-000000000000";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["id_token.aud"];
+            }, testSample: testSampleCc);
+
+            // Assert
+            StringAssert.Equals(expected, actual);
+        }
+
+        /// <summary>
+        /// Validates whether the grid view contains expected id_token.aud value.
+        /// </summary>
+        [TestMethod]
+        public void ShouldShowExpectedIdentityToken_IssuerClaim_ConfidentialClient()
+        {
+            // Arrange
+            var expected = "https: //sts.windows.net/00000000-0000-0000-0000-000000000000";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["id_token.iss"];
+            }, testSample: testSampleCc);
+
+            // Assert
+            StringAssert.Equals(expected, actual);
+        }
+
+        /// <summary>
+        /// Validates whether the grid view contains expected id_token.email value.
+        /// </summary>
+        [TestMethod]
+        public void ShouldShowExpectedIdentityToken_EmailClaim_ConfidentialClient()
+        {
+            // Arrange
+            var expected = "jdoe@live.com";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["id_token.email"];
+            }, testSample: testSampleCc);
+
+            // Assert
+            StringAssert.Equals(expected, actual);
         }
 
         /// <summary>
@@ -95,14 +137,19 @@
         public void ShouldWipeOutPreviousStateWhenAssignNewSession()
         {
             // Arrange
-            var expected = 4;
+            var expected = -1;
             var actual = -1;
 
             // Act
             this.Act(inspectorSpy: (i) =>
             {
+                // Save results from the first run
+                expected = i.GetAllGridRowsCount();
+
                 // Exercise the scenario again to compare the outcome
                 i.AssignSession(testSampleCc);
+
+                // Save results from the second run
                 actual = i.GetAllGridRowsCount();
             }, testSample: testSampleCc);
 

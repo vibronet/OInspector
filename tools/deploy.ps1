@@ -11,6 +11,14 @@ Copy-Item -Path "$env:REPOROOT\Inspector\bin\Debug\OpenIDConnect.Inspector*" `
           -Destination "${env:ProgramFiles(x86)}\Fiddler2\Inspectors" `
           -Force
 
+Copy-Item -Path "$env:REPOROOT\Inspector\bin\Debug\Newtonsoft.Json.dll" `
+          -Destination "${env:ProgramFiles(x86)}\Fiddler2\Inspectors" `
+          -Force
+
+Copy-Item -Path "$env:REPOROOT\Inspector\bin\Debug\System.IdentityModel.Tokens.Jwt.dll" `
+          -Destination "${env:ProgramFiles(x86)}\Fiddler2\Inspectors" `
+          -Force
+
 # Turns out to be name of a test sample in the source tree
 if ([IO.File]::Exists($testSample) -eq $false) {
     $testSample = "$env:REPOROOT\Inspector.Tests\testSamples\$testSample.saz"

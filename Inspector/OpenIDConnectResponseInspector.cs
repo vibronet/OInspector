@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.IdentityModel.Tokens;
+    using System.Linq;
     using System.Security.Claims;
     using System.Windows.Forms;
     using Controls;
@@ -122,16 +123,25 @@
 
         private void ExpandJwtTokenStringIfAny(NameValueCollection dataSource)
         {
-            var jwtEncodedString = dataSource.Get("id_token");
-            if (!string.IsNullOrWhiteSpace(jwtEncodedString))
+            var filteredKeys = dataSource.AllKeys.Where(this.MatchTokenKeyName);
+            foreach (var key in filteredKeys)
             {
-                dataSource.Remove("id_token");
-                var jwt = new JwtSecurityToken(jwtEncodedString);
-                foreach (var claim in jwt.Claims)
+                var jwtEncodedString = dataSource.Get(key);
+                if (!string.IsNullOrWhiteSpace(jwtEncodedString))
                 {
-                    this.SafeAddClaimValue(dataSource, claim, "id_token");
+                    dataSource.Remove(key);
+                    var jwt = new JwtSecurityToken(jwtEncodedString);
+                    foreach (var claim in jwt.Claims)
+                    {
+                        this.SafeAddClaimValue(dataSource, claim, key);
+                    }
                 }
             }
+        }
+
+        private bool MatchTokenKeyName(string keyName)
+        {
+            return keyName.OICEquals("id_token") || keyName.OICEquals("access_token");
         }
 
         private void SafeAddClaimValue(NameValueCollection dataSource, Claim claim, string formatString)

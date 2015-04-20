@@ -1,7 +1,9 @@
 ﻿namespace OpenIDConnect.Inspector.Tests.ResponseInspector
 {
     using System;
+    using System.Linq;
     using System.Windows.Forms;
+    using Fiddler;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -24,6 +26,90 @@
         /// Test sample capturing attributes of the native client response type
         /// </summary>
         const string testSampleAuthorizationGrantNc = @".\testSamples\oidc-authorization-code-grant-nc.saz";
+
+        /// <summary>
+        /// Validates whether the grid view does not contain id_token value, since it has to be removed to avoid the confusion in the inspector's view.
+        /// </summary>
+        [TestMethod]
+        public void ShouldRemoveIdentityTokenAfterExpandingItsClaims()
+        {
+            // Arrange
+            var expected = false;
+            var actual = true;
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows.AllKeys.Any(k => k.OICEquals("id_token"));
+            }, testSample: testSampleAuthorizationGrantNc);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Validates whether the grid view does not contain access_token value, since it has to be removed to avoid the confusion in the inspector's view.
+        /// </summary>
+        [TestMethod]
+        public void ShouldRemoveAccessTokenAfterExpandingItsClaims()
+        {
+            // Arrange
+            var expected = false;
+            var actual = true;
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows.AllKeys.Any(k => k.OICEquals("access_token"));
+            }, testSample: testSampleAuthorizationGrantNc);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Validates whether the grid view contains expected access_token.altsecid value.
+        /// </summary>
+        [TestMethod]
+        public void ShouldShowExpectedAccessToken_AltSecIdClaim_NativeClient()
+        {
+            // Arrange
+            var expected = "1:live.com:0000000000000000";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["access_token.altsecid"];
+            }, testSample: testSampleAuthorizationGrantNc);
+
+            // Assert
+            StringAssert.Equals(expected, actual);
+        }
+
+        /// <summary>
+        /// Validates whether the grid view contains expected access_token.aud value.
+        /// </summary>
+        [TestMethod]
+        public void ShouldShowExpectedAccessToken_AudienceClaim_NativeClient()
+        {
+            // Arrange
+            var expected = "00000000-0000-0000-0000-000000000000";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["access_token.aud"];
+            }, testSample: testSampleAuthorizationGrantNc);
+
+            // Assert
+            StringAssert.Equals(expected, actual);
+        }
 
         /// <summary>
         /// Validates whether the grid view contains expected session_state value with native client response type.

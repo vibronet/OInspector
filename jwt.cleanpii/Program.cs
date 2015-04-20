@@ -2,29 +2,23 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.IdentityModel.Tokens;
     using System.Linq;
     using System.Security.Claims;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Windows.Forms;
+    using Newtonsoft.Json;
 
     class Program
     {
-        private const string emptyGuidString = "00000000-0000-0000-0000-000000000000";
-        private const string issuer = "https://sts.windows.net/" + emptyGuidString;
+        private static readonly Dictionary<string, string> map;
+        private static readonly string issuer;
 
-        private static Dictionary<string, string> map = new Dictionary<string, string>()
+        static Program()
         {
-            { "aud", emptyGuidString },
-            { "unique_name", "live.com#jdoe@live.com" },
-            { "email", "jdoe@live.com" },
-            { "given_name", "John" },
-            { "family_name", "Doe" },
-            { "altsecid", "1:live.com:0000000000000000" },
-            { "tid", emptyGuidString },
-            { "iss", issuer }
-        };
+            issuer = ConfigurationManager.AppSettings["issuer"];
+            map = JsonConvert.DeserializeObject<Dictionary<string, string>>(ConfigurationManager.AppSettings["map"]);
+        }
 
         [STAThread]
         static void Main(string[] args)

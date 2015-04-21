@@ -15,7 +15,14 @@ You can verify what version you have by clicking on Help->About Fiddler.
 
 
 
-- Download and expand the ZIP or clone the repo via . 
+- Download and expand [the ZIP](https://github.com/vibronet/OInspector/archive/master.zip) or [clone the repo](github-windows://openRepo/https://github.com/vibronet/OInspector). 
+- Open a command prompt and navigate to the local root
+- Launch `envy.cmd` to set up the build environment
+- Run `build`
+- Run `deploy`
 
+aaand you are done.
 
 ## Getting Started
+
+OInspector works on simple premises. Once you install it, you will see that the inspector tab TO BE CONTINUED

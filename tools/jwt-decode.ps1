@@ -107,6 +107,12 @@ if ($indexOf -gt -1) {
     $inputString = $inputString.Substring($indexOf + 1)
 }
 
+# recognize Bearer token scheme and parse it accordingly
+if ($inputString.StartsWith("Bearer ")) {
+    $typeString = "bearer"
+    $inputString = $inputString.Substring(7)
+}
+
 # suppress messages from loading an assembly
 $assembly = [Reflection.Assembly]::LoadFile("${env:NUGETROOT}\System.IdentityModel.Tokens.Jwt.4.0.2.202250711\lib\net45\System.IdentityModel.Tokens.Jwt.dll")
 

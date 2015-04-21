@@ -13,3 +13,4 @@ deploy=powershell.exe -ExecutionPolicy Unrestricted -File %REPOROOT%\tools\deplo
 jwtdecode=powershell.exe -ExecutionPolicy Unrestricted -File %REPOROOT%\tools\jwt-decode.ps1 $*
 mstest=%EXTERNAL%\mstest\mstest.exe $*
 jwtcleanpii=%EXTERNAL%\jwt.cleanpii\jwt.cleanpii.exe $*
+samples=dir /B %REPOROOT%\Inspector.Tests\testSamples

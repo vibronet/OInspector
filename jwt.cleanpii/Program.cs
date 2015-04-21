@@ -30,6 +30,12 @@
                 return;
             }
 
+            // Cleanup some protocol-specific artefacts to speedup a bit token string decoding process
+            if (jwtEncodedString.StartsWith("Bearer "))
+            {
+                jwtEncodedString = jwtEncodedString.Substring(7);
+            }
+
             var input = new JwtSecurityToken(jwtEncodedString: jwtEncodedString);
             var claims = CleanupClaims(input.Claims);
             var payload = new JwtPayload(claims);

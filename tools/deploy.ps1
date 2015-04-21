@@ -1,4 +1,6 @@
-﻿param([String]$testSample = "oidc-authorization-code-request")
+﻿param(
+    [String]$testSample = "oidc-authorization-code-request",
+    [Switch]$live)
 
 # Shutdown Fiddler first to be able to copy the plugin
 Stop-Process -Name "Fiddler" -Force -ErrorAction SilentlyContinue
@@ -24,6 +26,10 @@ if ([IO.File]::Exists($testSample) -eq $false) {
     $testSample = "$env:REPOROOT\Inspector.Tests\testSamples\$testSample.saz"
 }
 
+$fiddlerPath = "${env:ProgramFiles(x86)}\Fiddler2\Fiddler.exe"
 # See the following link for more command-line arguments: http://fiddler.wikidot.com/commandlineparams
-Start-Process -FilePath "${env:ProgramFiles(x86)}\Fiddler2\Fiddler.exe" `
-              -ArgumentList @("-viewer", "-noattach", $testSample)
+if ($live -eq $false) {
+    Start-Process -FilePath $fiddlerPath -ArgumentList @("-viewer", "-noattach", $testSample)
+} else {
+    Start-Process -FilePath $fiddlerPath
+}

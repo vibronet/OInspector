@@ -10,9 +10,9 @@
     [TestClass]
     public class ClearTestSuite
     {
-        private void Act(Action<TestableOpenIDConnectRequestInspector> inspectorSpy)
+        private void Act(Action<TestableRequestInspector> inspectorSpy)
         {
-            var inspector = new TestableOpenIDConnectRequestInspector();
+            var inspector = new TestableRequestInspector();
             inspector.AddToTab(new TabPage());
             inspector.AssignSession(@".\testSamples\oidc-authorization-code-request.saz");
             inspector.Clear();

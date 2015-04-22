@@ -42,9 +42,9 @@
             Assert.AreEqual(expected, actual);
         }
 
-        private int Act(Action<TestableOpenIDConnectRequestInspector> inspectorSpy)
+        private int Act(Action<TestableRequestInspector> inspectorSpy)
         {
-            var inspector = new TestableOpenIDConnectRequestInspector();
+            var inspector = new TestableRequestInspector();
             var sessionScore = inspector.ScoreForSession(@".\testSamples\oidc-authorization-code-request.saz");
             inspectorSpy(inspector);
             return sessionScore;

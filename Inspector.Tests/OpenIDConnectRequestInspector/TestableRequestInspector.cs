@@ -1,7 +1,6 @@
 ﻿namespace OpenIDConnect.Inspector.Tests.OpenIDConnectRequestInspector
 {
-    using System.IO;
-    using System.Linq;
+    using System.Collections.Specialized;
     using System.Windows.Forms;
     using Common;
     using Fiddler;
@@ -9,7 +8,7 @@
     /// <summary>
     /// Testable implementation of OpenIDConnectRequestInspector.
     /// </summary>
-    public class TestableOpenIDConnectRequestInspector : OpenIDConnect.Inspector.OpenIDConnectRequestInspector
+    public class TestableRequestInspector : OpenIDConnect.Inspector.OpenIDConnectRequestInspector
     {
         /// <summary>
         /// Gets the session being inspected during the current test run.
@@ -22,6 +21,27 @@
         public TabPage TabPage
         {
             get { return this.tabPage; }
+        }
+
+        /// <summary>
+        /// Wrapper for the test runtime to get count of all grid rows.
+        /// </summary>
+        public int GetAllGridRowsCount()
+        {
+            return this.gridView.GetAllGridRowsCount();
+        }
+
+        /// <summary>
+        /// Wrapper for the test runtime to get all grid rows as 'name => value' collection.
+        /// </summary>
+        public NameValueCollection GetAllGridRows()
+        {
+            if (this.gridView == null)
+            {
+                return new NameValueCollection();
+            }
+
+            return this.gridView.GetAllGridRows();
         }
 
         /// <summary>

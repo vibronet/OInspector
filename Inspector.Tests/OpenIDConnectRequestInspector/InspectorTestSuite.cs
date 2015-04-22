@@ -29,7 +29,7 @@
 
         private void Act(Action<TabPage> tabSpy)
         {
-            var inspector = new TestableOpenIDConnectRequestInspector();
+            var inspector = new TestableRequestInspector();
             var testDummy = new TabPage();
             inspector.AddToTab(testDummy);
             tabSpy(testDummy);

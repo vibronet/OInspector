@@ -73,7 +73,7 @@
     <Compile Include="OpenIDConnectRequestInspector\ClearTestSuite.cs" />
     <Compile Include="OpenIDConnectRequestInspector\InspectorTestSuite.cs" />
     <Compile Include="OpenIDConnectRequestInspector\ScoreForSessionTestSuite.cs" />
-    <Compile Include="OpenIDConnectRequestInspector\TestableOpenIDConnectRequestInspector.cs" />
+    <Compile Include="OpenIDConnectRequestInspector\TestableRequestInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseInspector\AssignSessionTestSuite.cs" />
     <Compile Include="ResponseInspector\ClearTestSuite.cs" />

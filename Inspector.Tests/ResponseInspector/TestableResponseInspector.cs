@@ -70,7 +70,7 @@
         /// </summary>
         private void SimulateInspectorsPipeline(Session session)
         {
-            var inspector = new TestableOpenIDConnectRequestInspector();
+            var inspector = new TestableRequestInspector();
             inspector.ScoreForSession(session);
         }
     }

@@ -11,6 +11,20 @@
         const string OidcFlag = "oidc";
 
         /// <summary>
+        /// Gets a value indicating whether the given session has Bearer token in Authorization header.
+        /// </summary>
+        public static bool HasBearerAuthorizationToken(this Session oSession)
+        {
+            var authorization = oSession.oRequest.headers["Authorization"];
+            if (string.IsNullOrWhiteSpace(authorization))
+            {
+                return false;
+            }
+
+            return authorization.OICStartsWith("Bearer ");
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the given session is an authorization grant response or not.
         /// </summary>
         public static bool IsAuthorizationGrantResponse(this Session oSession)

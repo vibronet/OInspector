@@ -31,5 +31,5 @@ $fiddlerPath = "${env:ProgramFiles(x86)}\Fiddler2\Fiddler.exe"
 if ($live -eq $false) {
     Start-Process -FilePath $fiddlerPath -ArgumentList @("-viewer", "-noattach", $testSample)
 } else {
-    Start-Process -FilePath $fiddlerPath
+    Start-Process -FilePath $fiddlerPath -ArgumentList @($testSample)
 }

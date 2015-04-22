@@ -9,6 +9,25 @@
     [TestClass]
     public class ScoreForSessionTestSuite
     {
+        private const string testSampleAuthorizationCodeRequest = @".\testSamples\oidc-authorization-code-request.saz";
+        private const string testSampleOAuthWebApiPlusJwt = @".\testSamples\oauth-jwt-webapi-request.saz";
+
+        /// <summary>
+        /// Validates whether score returned matches expectations.
+        /// </summary>
+        [TestMethod]
+        public void ShouldReturnExpectedScoreForSessionWithBearerToken()
+        {
+            // Arrange
+            var expected = 70;
+
+            // Act
+            var actual = this.Act(inspectorSpy: (i) => { }, testSample: testSampleOAuthWebApiPlusJwt);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
         /// <summary>
         /// Validates whether a special flag is set for the session object.
         /// </summary>
@@ -20,7 +39,9 @@
             var actual = false;
 
             // Act
-            this.Act(inspectorSpy: (i) => actual = i.Session.IsOidcSession());
+            this.Act(inspectorSpy: (i) => {
+                actual = i.Session.IsOidcSession();
+            }, testSample: testSampleAuthorizationCodeRequest);
 
             // Assert
             Assert.AreEqual(expected, actual);
@@ -36,16 +57,16 @@
             var expected = 70;
 
             // Act
-            var actual = this.Act(inspectorSpy: (i) => { });
+            var actual = this.Act(inspectorSpy: (i) => { }, testSample: testSampleAuthorizationCodeRequest);
 
             // Assert
             Assert.AreEqual(expected, actual);
         }
 
-        private int Act(Action<TestableRequestInspector> inspectorSpy)
+        private int Act(Action<TestableRequestInspector> inspectorSpy, string testSample)
         {
             var inspector = new TestableRequestInspector();
-            var sessionScore = inspector.ScoreForSession(@".\testSamples\oidc-authorization-code-request.saz");
+            var sessionScore = inspector.ScoreForSession(testSample);
             inspectorSpy(inspector);
             return sessionScore;
         }

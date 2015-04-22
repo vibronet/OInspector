@@ -10,7 +10,57 @@
     [TestClass]
     public class AssignSessionTestSuite
     {
+        /// <summary>
+        /// Test sample capturing attributes of the authorization code request.
+        /// </summary>
         private const string testSampleAuthorizationCode = @".\testSamples\oidc-authorization-code-request.saz";
+
+        /// <summary>
+        /// Test sample capturing attributes of the OAuth (WebApi + JWT) request.
+        /// </summary>
+        private const string testSampleOAuthWebApiPlusJwt = @".\testSamples\oauth-jwt-webapi-request.saz";
+
+        /// <summary>
+        /// Validates whether the grid view contains expected bearer_token.unique_name value.
+        /// </summary>
+        [TestMethod]
+        public void ShouldReturnExpectedBearerToken_UniqueNameClaim()
+        {
+            // Arrange
+            var expected = "live.com#jdoe@live.com";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["bearer_token.unique_name"];
+            }, testSample: testSampleOAuthWebApiPlusJwt);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Validates whether the grid view contains expected bearer_token.aud value.
+        /// </summary>
+        [TestMethod]
+        public void ShouldReturnExpectedBearerToken_AudienceClaim()
+        {
+            // Arrange
+            var expected = "00000000-0000-0000-0000-000000000000";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["bearer_token.aud"];
+            }, testSample: testSampleOAuthWebApiPlusJwt);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
 
         /// <summary>
         /// Validates whether AssignSession method takes care of clearing out the previous state.

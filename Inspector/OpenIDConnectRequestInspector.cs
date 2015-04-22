@@ -1,6 +1,9 @@
 ﻿namespace OpenIDConnect.Inspector
 {
+    using System;
     using System.Collections.Specialized;
+    using System.IdentityModel.Tokens;
+    using System.Security.Claims;
     using System.Windows.Forms;
     using Controls;
     using Fiddler;
@@ -47,12 +50,50 @@
         {
             var dataSource = new NameValueCollection();
 
-            if (oSession.IsOidcSession())
+            if (oSession.IsOidcSession() && oSession.PathAndQuery.IndexOf("/oauth2/authorize") > -1)
             {
                 dataSource = oSession.GetQueryString();
             }
+            else if (oSession.HasBearerAuthorizationToken())
+            {
+                dataSource = this.ParseAuthorizationHeader(oSession);
+            }
 
             this.gridView.Append(dataSource);
+        }
+
+        private NameValueCollection ParseAuthorizationHeader(Session oSession)
+        {
+            // Extracts the header's value without the token type (Bearer)
+            var jwtEncodedString = oSession.oRequest.headers["Authorization"].Substring(7);
+            var dataSource = new NameValueCollection();
+
+            try
+            {
+                var jwt = new JwtSecurityToken(jwtEncodedString);
+                foreach (var claim in jwt.Claims)
+                {
+                    this.SafeAddClaimValue(dataSource, claim, "bearer_token");
+                }
+            }
+            catch (Exception e)
+            {
+                // TODO: Write more details about the exception to the log without using ambient context & compromizing testability.
+                dataSource.Add("parse_error", e.ToString());
+            }
+
+            return dataSource;
+        }
+
+        private void SafeAddClaimValue(NameValueCollection dataSource, Claim claim, string formatString)
+        {
+            if (claim == null)
+            {
+                return;
+            }
+
+            var keyName = string.Concat(formatString, ".", claim.Type);
+            dataSource.Add(keyName, claim.Value);
         }
 
         private void EnsureReady()
@@ -71,7 +112,8 @@
         public override int ScoreForSession(Fiddler.Session oSession)
         {
             // Score ourselves at 70 when the path matches Authorize endpoint
-            if (oSession.PathAndQuery.IndexOf("/oauth2/authorize") > -1)
+            if (oSession.PathAndQuery.IndexOf("/oauth2/authorize") > -1 || 
+                oSession.HasBearerAuthorizationToken())
             {
                 oSession.MarkAsOidcSession();
                 return OidcSessionScore;

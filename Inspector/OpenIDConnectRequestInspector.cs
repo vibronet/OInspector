@@ -8,7 +8,7 @@
         const int OidcSessionScore = 70;
 
         public OpenIDConnectRequestInspector()
-            : base(title: "OIDC/OAuth")
+            : base(title: "OIDC")
         {
         }
 

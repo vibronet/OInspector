@@ -13,7 +13,7 @@ You can verify what version you have by clicking on Help->About Fiddler.
 
 ## Setup
 
-- Download and expand [the ZIP](https://github.com/vibronet/OInspector/archive/master.zip) or [clone the repo](github-windows://openRepo/https://github.com/vibronet/OInspector). 
+- Download and expand [the ZIP](https://github.com/vibronet/OInspector/archive/dev.zip) or [clone the repo](github-windows://openRepo/https://github.com/vibronet/OInspector) and select the Dev branch. 
 - Open a command prompt and navigate to the local root
 - Launch `envy.cmd` to set up the build environment
 - Run `build`

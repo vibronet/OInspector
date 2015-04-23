@@ -17,7 +17,7 @@
         public void ShouldSetTabNameAsExpected()
         {
             // Arrange
-            var expected = "OIDC";
+            var expected = "OIDC/OAuth";
             var actual = default(string);
 
             // Act

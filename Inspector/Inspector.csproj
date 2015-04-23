@@ -75,6 +75,7 @@
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\SessionExtensions.cs" />
     <Compile Include="IDependencyResolver.cs" />
+    <Compile Include="OidcInspector.cs" />
     <Compile Include="OpenIDConnectRequestInspector.cs" />
     <Compile Include="OpenIDConnectResponseInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

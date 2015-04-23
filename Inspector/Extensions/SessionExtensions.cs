@@ -36,6 +36,15 @@
         }
 
         /// <summary>
+        /// Gets request body as name/value collection from the given session.
+        /// </summary>
+        public static NameValueCollection GetRequestBody(this Session oSession)
+        {
+            // We can use ParseQueryString since posted request body is also delimited using '&'
+            return ParseQueryString(oSession.GetRequestBodyAsString());
+        }
+
+        /// <summary>
         /// Gets query string as name/value collection from the given session's url.
         /// </summary>
         public static NameValueCollection GetQueryString(this Session oSession)
@@ -57,7 +66,8 @@
         public static bool IsAuthorizationCodeResponse(this Session oSession)
         {
             return IsAuthorizationCodeResponse_ConfidentialClient(oSession) ||
-                IsAuthorizationCodeResponse_NativeClient(oSession);
+                IsAuthorizationCodeResponse_NativeClient(oSession) ||
+                IsIncomingAuthorizationCodeResponse(oSession);
         }
 
         /// <summary>
@@ -74,6 +84,18 @@
             return urlString.OICStartsWith("urn:ietf:wg:oauth:2.0:oob?")
                 && urlString.OICContains("code=")
                 && urlString.OICContains("session_state=");
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified session is an incoming authorization code response received by client application.
+        /// </summary>
+        public static bool IsIncomingAuthorizationCodeResponse(this Session oSession)
+        {
+            return oSession.RequestMethod.OICEquals("POST")
+                && oSession.utilFindInRequest("code=", bCaseSensitive: false) > -1
+                && oSession.utilFindInRequest("id_token=", bCaseSensitive: false) > -1
+                && oSession.utilFindInRequest("state=", bCaseSensitive: false) > -1
+                && oSession.utilFindInRequest("session_state=", bCaseSensitive: false) > -1;
         }
 
         /// <summary>
@@ -104,10 +126,10 @@
             oSession[OidcFlag] = "+";
         }
 
-        private static NameValueCollection ParseQueryString(string urlString)
+        private static NameValueCollection ParseQueryString(string inputString)
         {
-            var indexOf = urlString.IndexOf("?") + 1;
-            var queryString = urlString.Substring(indexOf);
+            var indexOf = inputString.IndexOf("?") + 1;
+            var queryString = inputString.Substring(indexOf);
             return Utilities.ParseQueryString(queryString);
         }
     }

@@ -13,62 +13,14 @@
     /// <summary>
     /// OpenID Connect response inspector.
     /// </summary>
-    public class OpenIDConnectResponseInspector : Inspector2, IResponseInspector2, IBaseInspector2
+    public class OpenIDConnectResponseInspector : OidcInspector, IResponseInspector2
     {
         const int OidcSessionScore = 99;
-        protected TabPage tabPage;
-        protected WebFormEditor gridView;
 
-        #region Inspector 2 Members
-
-        /// <summary>
-        /// Initializes a specified tab with the layout and controls.
-        /// </summary>
-        public override void AddToTab(TabPage o)
+        public OpenIDConnectResponseInspector()
+            : base(title: "OIDC")
         {
-            this.tabPage = o;
-            this.tabPage.Text = "OIDC";
         }
-
-        /// <summary>
-        /// Gets tab page order of the inspector.
-        /// </summary>
-        public override int GetOrder()
-        {
-            return -1;
-        }
-
-        /// <summary>
-        /// Assigns the specified session to the inspector.
-        /// </summary>
-        public override void AssignSession(Session oSession)
-        {
-            this.Clear();
-            base.AssignSession(oSession);
-
-            if (this.ScoreForSession(oSession) == OidcSessionScore)
-            {
-                this.EnsureReady();
-                this.DisplaySessionContent(oSession);
-            }
-        }
-
-        /// <summary>
-        /// Scores how relevant the specified session is for the given inspector.
-        /// </summary>
-        public override int ScoreForSession(Session oSession)
-        {
-            if (oSession.IsOidcSession()
-                || oSession.IsAuthorizationCodeResponse()
-                || oSession.IsAuthorizationGrantResponse())
-            {
-                return OidcSessionScore;
-            }
-
-            return base.ScoreForSession(oSession);
-        }
-
-        #endregion
 
         #region IResponseInspector2 Members
 
@@ -76,83 +28,45 @@
 
         #endregion
 
-        #region IBaseInspector2 Members
+        /// <summary>
+        /// Scores how relevant the specified session is for the given inspector.
+        /// </summary>
+        public override int ScoreForSession(Session oSession)
+        {
+            if (oSession.IsOidcSession() ||
+                oSession.IsAuthorizationCodeResponse() ||
+                oSession.IsAuthorizationGrantResponse())
+            {
+                return OidcSessionScore;
+            }
+
+            return base.ScoreForSession(oSession);
+        }
 
         /// <summary>
-        /// Wipes out state of all child controls.
+        /// Gets a value indicating whether inspector can handle the given session.
         /// </summary>
-        public void Clear()
+        protected override bool CanHandleSession(Session oSession)
         {
-            if (this.gridView != null)
-            {
-                this.gridView.Clear();
-            }
+            return this.ScoreForSession(oSession) == OidcSessionScore;
         }
 
-        public bool bDirty
+        protected override NameValueCollection ParseSession(Session oSession)
         {
-            get { return false; }
-        }
-
-        public bool bReadOnly { get; set; }
-
-        public byte[] body { get; set; }
-
-        #endregion
-
-        private void DisplaySessionContent(Session oSession)
-        {
-            var dataSource = new NameValueCollection();
             if (oSession.IsAuthorizationCodeResponse_ConfidentialClient())
             {
-                dataSource = this.ParseAuthorizationCodeResponse(oSession);
+                return this.ParseAuthorizationCodeResponse(oSession);
             }
             else if (oSession.IsAuthorizationCodeResponse_NativeClient())
             {
-                dataSource = this.ParseAuthorizationCodeResponse_NativeClient(oSession);
+                return this.ParseAuthorizationCodeResponse_NativeClient(oSession);
             }
             else if (oSession.IsAuthorizationGrantResponse())
             {
-                dataSource = this.ParseAuthorizationGrantResponse(oSession);
+                return this.ParseAuthorizationGrantResponse(oSession);
             }
 
-            this.ExpandJwtTokenStringIfAny(dataSource);
-
-            this.gridView.Append(dataSource);
-        }
-
-        private void ExpandJwtTokenStringIfAny(NameValueCollection dataSource)
-        {
-            var filteredKeys = dataSource.AllKeys.Where(this.MatchTokenKeyName);
-            foreach (var key in filteredKeys)
-            {
-                var jwtEncodedString = dataSource.Get(key);
-                if (!string.IsNullOrWhiteSpace(jwtEncodedString))
-                {
-                    dataSource.Remove(key);
-                    var jwt = new JwtSecurityToken(jwtEncodedString);
-                    foreach (var claim in jwt.Claims)
-                    {
-                        this.SafeAddClaimValue(dataSource, claim, key);
-                    }
-                }
-            }
-        }
-
-        private bool MatchTokenKeyName(string keyName)
-        {
-            return keyName.OICEquals("id_token") || keyName.OICEquals("access_token");
-        }
-
-        private void SafeAddClaimValue(NameValueCollection dataSource, Claim claim, string formatString)
-        {
-            if (claim == null)
-            {
-                return;
-            }
-
-            var keyName = string.Concat(formatString, ".", claim.Type);
-            dataSource.Add(keyName, claim.Value);
+            return null;
         }
 
         private NameValueCollection ParseAuthorizationGrantResponse(Session oSession)
@@ -205,16 +119,6 @@
             }
 
             return map;
-        }
-
-        private void EnsureReady()
-        {
-            if (this.gridView == null)
-            {
-                this.gridView = new WebFormEditor();
-                this.tabPage.Controls.Add(this.gridView);
-                this.gridView.Dock = DockStyle.Fill;
-            }
         }
     }
 }

@@ -21,6 +21,95 @@
         private const string testSampleOAuthWebApiPlusJwt = @".\testSamples\oauth-jwt-webapi-request.saz";
 
         /// <summary>
+        /// Test sample capturing attrubutes of an incoming authorizarion code response (eq. sent to an app via post).
+        /// </summary>
+        private const string testSampleIncomingAuthorizationCodeResponse = @".\testSamples\oidc-incoming-authorization-code-response.saz";
+
+        /// <summary>
+        /// Validates whether the grid view contains expected id_token.upn claim value of an incoming authorization code response.
+        /// </summary>
+        [TestMethod]
+        public void ShouldShowExpectedIdentityToken_UserPrincipalNameClaim_OfIncomingAuthorizationCodeResponse()
+        {
+            // Arrange
+            var expected = "jdoe@live.com";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["id_token.upn"];
+            }, testSample: testSampleIncomingAuthorizationCodeResponse);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Validates whether the grid view contains expected id_token.aud claim value of an incoming authorization code response.
+        /// </summary>
+        [TestMethod]
+        public void ShouldShowExpectedIdentityToken_AudienceClaim_OfIncomingAuthorizationCodeResponse()
+        {
+            // Arrange
+            var expected = "00000000-0000-0000-0000-000000000000";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["id_token.aud"];
+            }, testSample: testSampleIncomingAuthorizationCodeResponse);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Validates whether the grid view contains expected session_state value of an incoming authorization code response.
+        /// </summary>
+        [TestMethod]
+        public void ShouldShowExpectedSessionStateOfIncomingAuthorizationCodeResponse()
+        {
+            // Arrange
+            var expected = "680fe215-68e6-4081-afd2-04a85e2c696f";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["session_state"];
+            }, testSample: testSampleIncomingAuthorizationCodeResponse);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Validates whether the grid view contains expected code value of an incoming authorization code response.
+        /// </summary>
+        [TestMethod]
+        public void ShouldShowExpectedCodeOfIncomingAuthorizationCodeResponse()
+        {
+            // Arrange
+            var expected = "AAABAAAAvPM1KaPlrEqdFSBzjqfTGBBK7c6m";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["code"];
+            }, testSample: testSampleIncomingAuthorizationCodeResponse);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
         /// Validates whether the grid view contains expected bearer_token.unique_name value.
         /// </summary>
         [TestMethod]

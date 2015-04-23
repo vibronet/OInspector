@@ -84,6 +84,9 @@
     <EmbeddedResource Include="Controls\SimpleTextView.resx">
       <DependentUpon>SimpleTextView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WebFormEditor.resx">
+      <DependentUpon>WebFormEditor.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

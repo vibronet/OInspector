@@ -23,8 +23,9 @@
         /// </summary>
         public override int ScoreForSession(Fiddler.Session oSession)
         {
-            // Score ourselves at 70 when the path matches Authorize endpoint
+            // Score ourselves at 70 when the path matches Authorize or Token endpoint
             if (oSession.PathAndQuery.IndexOf("/oauth2/authorize") > -1 ||
+                oSession.PathAndQuery.IndexOf("/oauth2/token") > -1 ||
                 oSession.HasBearerAuthorizationToken() ||
                 oSession.IsAuthorizationCodeResponse())
             {
@@ -40,6 +41,12 @@
             if (oSession.IsOidcSession() && oSession.PathAndQuery.IndexOf("/oauth2/authorize") > -1)
             {
                 return oSession.GetQueryString();
+            }
+            else if (oSession.IsOidcSession() && 
+                oSession.PathAndQuery.IndexOf("/oauth2/token") > -1 &&
+                oSession.RequestMethod.OICEquals("POST"))
+            {
+                return oSession.GetRequestBody();
             }
             else if (oSession.IsIncomingAuthorizationCodeResponse())
             {

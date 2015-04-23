@@ -11,7 +11,24 @@
     {
         private const string testSampleAuthorizationCodeRequest = @".\testSamples\oidc-authorization-code-request.saz";
         private const string testSampleOAuthWebApiPlusJwt = @".\testSamples\oauth-jwt-webapi-request.saz";
-        private const string testSampleAuthorizationCodeResponseViaPost = @"C:\Users\Pavel\Documents\Fiddler2\Captures\vittorio\POSTtokentosite.saz";
+        private const string testSampleAuthorizationCodeResponseViaPost = @".\testSamples\oidc-incoming-authorization-code-response.saz";
+        private const string testSampleAuthorizationCodeRequestViaTokenEndpoint = @".\testSamples\oidc-token-endpoint-request-bug.saz";
+
+        /// <summary>
+        /// Validates whether score returned matches expectations.
+        /// </summary>
+        [TestMethod]
+        public void ShouldReturnExpectedScoreForAuthorizationCodeRequestSessionViaTokenEndpoint()
+        {
+            // Arrange
+            var expected = 70;
+
+            // Act
+            var actual = this.Act(inspectorSpy: (i) => { }, testSample: testSampleAuthorizationCodeRequestViaTokenEndpoint);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
 
         /// <summary>
         /// Validates whether score returned matches expectations.

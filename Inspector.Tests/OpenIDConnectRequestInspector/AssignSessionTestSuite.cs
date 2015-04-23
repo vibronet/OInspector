@@ -26,6 +26,53 @@
         private const string testSampleIncomingAuthorizationCodeResponse = @".\testSamples\oidc-incoming-authorization-code-response.saz";
 
         /// <summary>
+        /// Test sample capturing attributes of an authorization code request using token endpoint.
+        /// </summary>
+        private const string testSampleAuthorizationCodeRequestViaTokenEndpoint = @".\testSamples\oidc-token-endpoint-request-bug.saz";
+
+        /// <summary>
+        /// Validates whether the grid view contains expected client_id value of an authorization code request via token endpoint.
+        /// </summary>
+        [TestMethod]
+        public void ShouldShowExpectedClientIdentifierOfAuthorizationCodeRequestFromTokenEndpoint()
+        {
+            // Arrange
+            var expected = "14b29dfb-8804-4c1b-98fa-b82dfdf00833";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["client_id"];
+            }, testSample: testSampleAuthorizationCodeRequestViaTokenEndpoint);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Validates whether the grid view contains expected resource value of an authorization code request via token endpoint.
+        /// </summary>
+        [TestMethod]
+        public void ShouldShowExpectedResourceOfAuthorizationCodeRequestFromTokenEndpoint()
+        {
+            // Arrange
+            var expected = "https://graph.windows.net";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["resource"];
+            }, testSample: testSampleAuthorizationCodeRequestViaTokenEndpoint);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
         /// Validates whether the grid view contains expected id_token.upn claim value of an incoming authorization code response.
         /// </summary>
         [TestMethod]

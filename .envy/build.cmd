@@ -19,7 +19,8 @@
 @call restore
 
 @rem Build the sources
-@call "%MSBUILD%" /fl /fl1 /fl2 /flp:%MSBUILD_FL% /flp1:logfile=errors.log;errorsonly /flp2:logfile=warnings.log;warningsonly
+@rem See the following link for detailed command-line arguments reference -> https://msdn.microsoft.com/en-us/library/ms164311.aspx
+@call "%MSBUILD%" /m /fl /fl1 /fl2 /flp:%MSBUILD_FL% /flp1:logfile=errors.log;errorsonly /flp2:logfile=warnings.log;warningsonly
 
 @rem Give some useful hints to the developer
 @if "%~1" == "--diagnostic" (

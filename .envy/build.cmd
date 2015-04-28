@@ -8,11 +8,11 @@
     @goto end
 )
 
-@set MSBUILD_FL="logfile=build.log"
+@set MSBUILD_FL=logfile=build.log
 
 @rem Enable diagnostic verbosity for the current build run
 @if "%~1" == "--diagnostic" (
-    @set MSBUILD_FL="%MSBUILD_FL%;verbosity=diagnostic"
+    @set MSBUILD_FL=%MSBUILD_FL%;verbosity=diagnostic
 )
 
 @rem Restore all NuGet packages (to ensure the build has all the dependencies)

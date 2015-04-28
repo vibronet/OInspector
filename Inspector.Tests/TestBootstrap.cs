@@ -11,6 +11,12 @@
     public class TestBootstrap
     {
         /// <summary>
+        /// Am empty test method to simulate testing for the sake of exercising automated deployment featured by MSTest.exe.
+        /// </summary>
+        [TestMethod, DeploymentItem(path: @"testSamples\", outputDirectory: "testSamples")]
+        public void testSamples() { }
+
+        /// <summary>
         /// We use this workaround to handle one-time initialization needs of the test project.
         /// </summary>
         [AssemblyInitialize]

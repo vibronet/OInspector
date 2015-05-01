@@ -14,3 +14,4 @@ mstest=%EXTERNAL%\mstest\mstest.exe $*
 jwtcleanpii=%EXTERNAL%\jwt.cleanpii\jwt.cleanpii.exe $*
 samples=dir /B %REPOROOT%\Inspector.Tests\testSamples
 runtests=%REPOROOT%\tools\runtests.cmd
+envy-code=%REPOROOT%\.envy\envy-code.cmd $*

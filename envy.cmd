@@ -10,7 +10,7 @@
 @set "REPOROOT=%cd%"
 @set "NUGETROOT=%REPOROOT%\packages"
 @set "EXTERNAL=%REPOROOT%\.external"
-@set "PATH=%REPOROOT%\.envy;%NUGETROOT%;%PATH%"
+@set "PATH=%REPOROOT%\.envy;%NUGETROOT%;%REPOROOT%\tools;%PATH%"
 
 @REM TODO: Redirect build output into the specified location
 @set "BUILD_OUTPUT=%REPOROOT%\out"

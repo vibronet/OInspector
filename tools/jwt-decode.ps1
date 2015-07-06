@@ -52,6 +52,7 @@ function Get-ClipboardText()
 function Format-JwtEncodedString([char[]]$jwtEncodedString, [string]$typeString) {
     $section = 0
     $formatString = ""
+    $claimIsSplitted = $false
 
     foreach ($char in $jwtEncodedString) {
         if ($char -eq '{') {
@@ -70,13 +71,16 @@ function Format-JwtEncodedString([char[]]$jwtEncodedString, [string]$typeString)
             }
 
             $char = [Environment]::NewLine + $char
+            $claimIsSplitted = $false
         } elseif ($char -eq ',') {
             $char +=  [Environment]::NewLine
+            $claimIsSplitted = $false
         } elseif ($char -eq '}') {
             $section++
             $char = [Environment]::NewLine + $char
-        } elseif ($char -eq ':') {
+        } elseif ($char -eq ':' -and $claimIsSplitted -eq $false) {
             $char += " "
+            $claimIsSplitted = $true
         } elseif (($char -eq '.') -and ($formatString.EndsWith('}'))) {
             # replace sections delimiter with a new line
             $char = [Environment]::NewLine

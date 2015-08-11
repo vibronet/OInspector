@@ -163,8 +163,29 @@
                 return;
             }
 
+            var keyValue = GetHumanFriendlyClaimValue(claim);
             var keyName = string.Concat(formatString, ".", claim.Type);
-            dataSource.Add(keyName, claim.Value);
+            dataSource.Add(keyName, keyValue);
+        }
+
+        private string GetHumanFriendlyClaimValue(Claim claim)
+        {
+            if (MatchTimeSpecificClaim(claim.Type))
+            {
+                var reference = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                double totalSecondsExpiresIn = Convert.ToDouble(claim.Value);
+                var time = (reference + TimeSpan.FromSeconds(totalSecondsExpiresIn)).ToLocalTime();
+                return string.Format("{0} ({1})", claim.Value, time);
+            }
+
+            return claim.Value;
+        }
+
+        private bool MatchTimeSpecificClaim(string type)
+        {
+            return type.OICEquals("exp")
+                || type.OICEquals("iat")
+                || type.OICEquals("nbf");
         }
 
         /// <summary>

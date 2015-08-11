@@ -178,6 +178,69 @@
         }
 
         /// <summary>
+        /// Validates whether the grid view contains expected bearer_token.nbf value.
+        /// </summary>
+        [TestMethod]
+        public void ShouldReturnExpectedBearerToken_NotBeforeClaim()
+        {
+            // Arrange
+            var expected = "1428036539 (4/2/2015 9:48:59 PM)";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["bearer_token.nbf"];
+            }, testSample: testSampleOAuthWebApiPlusJwt);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Validates whether the grid view contains expected bearer_token.iat value.
+        /// </summary>
+        [TestMethod]
+        public void ShouldReturnExpectedBearerToken_IssuedAtClaim()
+        {
+            // Arrange
+            var expected = "1428036539 (4/2/2015 9:48:59 PM)";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["bearer_token.iat"];
+            }, testSample: testSampleOAuthWebApiPlusJwt);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Validates whether the grid view contains expected bearer_token.exp value.
+        /// </summary>
+        [TestMethod]
+        public void ShouldReturnExpectedBearerToken_ExpirationTimeClaim()
+        {
+            // Arrange
+            var expected = "1428040439 (4/2/2015 10:53:59 PM)";
+            var actual = default(string);
+
+            // Act
+            this.Act(inspectorSpy: (i) =>
+            {
+                var gridRows = i.GetAllGridRows();
+                actual = gridRows["bearer_token.exp"];
+            }, testSample: testSampleOAuthWebApiPlusJwt);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
         /// Validates whether the grid view contains expected bearer_token.aud value.
         /// </summary>
         [TestMethod]

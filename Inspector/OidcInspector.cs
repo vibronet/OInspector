@@ -185,7 +185,8 @@
         {
             return type.OICEquals("exp")
                 || type.OICEquals("iat")
-                || type.OICEquals("nbf");
+                || type.OICEquals("nbf")
+                || type.OICEquals("auth_time");
         }
 
         /// <summary>

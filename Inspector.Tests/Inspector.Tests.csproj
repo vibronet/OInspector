@@ -82,7 +82,7 @@
     <Compile Include="TestBootstrap.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(REPOROOT)\Inspector\Inspector.csproj">
+    <ProjectReference Include="..\Inspector\Inspector.csproj">
       <Project>{ad4c38a3-eabf-4cae-8c24-829e2de69a9f}</Project>
       <Name>Inspector</Name>
     </ProjectReference>

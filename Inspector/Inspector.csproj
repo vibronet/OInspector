@@ -44,19 +44,19 @@
   <ItemGroup>
     <!-- External references -->
     <Reference Include="Fiddler">
-      <HintPath>$(EXTERNAL)\Fiddler\Fiddler.exe</HintPath>
+      <HintPath>..\.external\Fiddler\Fiddler.exe</HintPath>
     </Reference>
     <Reference Include="Standard">
-      <HintPath>$(EXTERNAL)\Fiddler\Standard.dll</HintPath>
+      <HintPath>..\.external\Fiddler\Standard.dll</HintPath>
     </Reference>
     <Reference Include="Be.Windows.Forms.HexBox">
-      <HintPath>$(EXTERNAL)\Fiddler\Be.Windows.Forms.HexBox.dll</HintPath>
+      <HintPath>..\.external\Fiddler\Be.Windows.Forms.HexBox.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>$(NUGETROOT)\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.IdentityModel.Tokens.Jwt">
-      <HintPath>$(NUGETROOT)\System.IdentityModel.Tokens.Jwt.4.0.2.202250711\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.2.202250711\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

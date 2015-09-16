@@ -115,6 +115,13 @@
                 map.Add(name, value);
 
                 startInputOf = bodyString.IndexOf("<input", endInputOf);
+
+                if (startInputOf == -1)
+                {
+                    // We're done with this form
+                    break;
+                }
+
                 endInputOf = bodyString.IndexOf("/>", startInputOf);
             }
 

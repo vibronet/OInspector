@@ -104,11 +104,14 @@
         public static bool IsAuthorizationCodeResponse_ConfidentialClient(this Session oSession)
         {
             return oSession.utilFindInResponse("form method=\"POST\"", bCaseSensitive: false) > -1
-                && oSession.utilFindInResponse("name=\"code\"", bCaseSensitive: false) > -1
+                && (oSession.utilFindInResponse("name=\"code\"", bCaseSensitive: false) > -1 ||
+                     oSession.utilFindInResponse("name=\"access_token\"", bCaseSensitive: false) > -1)
                 && oSession.utilFindInResponse("name=\"id_token\"", bCaseSensitive: false) > -1
                 && oSession.utilFindInResponse("name=\"state\"", bCaseSensitive: false) > -1
                 && oSession.utilFindInResponse("name=\"session_state\"", bCaseSensitive: false) > -1;
         }
+
+        
 
         /// <summary>
         /// Gets a value indicating whether the specified session is marked as OpenID Connect session or not.

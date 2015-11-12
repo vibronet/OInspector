@@ -67,7 +67,8 @@
         {
             return IsAuthorizationCodeResponse_ConfidentialClient(oSession) ||
                 IsAuthorizationCodeResponse_NativeClient(oSession) ||
-                IsIncomingAuthorizationCodeResponse(oSession);
+                IsIncomingAuthorizationCodeResponse(oSession) ||
+                IsAuthorizationCodeResponse_IdentityServerClient(oSession);
         }
 
         /// <summary>
@@ -111,7 +112,15 @@
                 && oSession.utilFindInResponse("name=\"session_state\"", bCaseSensitive: false) > -1;
         }
 
-        
+
+        public static bool IsAuthorizationCodeResponse_IdentityServerClient(this Session oSession)
+        {
+            return oSession.RequestMethod.OICEquals("POST")
+                && oSession.utilFindInRequest("grant_type", bCaseSensitive: false) > -1
+                && oSession.utilFindInResponse("access_token", bCaseSensitive: false) > 1
+                && oSession.utilFindInResponse("token_type\":\"bearer\"", bCaseSensitive: false) > 1;
+        }
+
 
         /// <summary>
         /// Gets a value indicating whether the specified session is marked as OpenID Connect session or not.

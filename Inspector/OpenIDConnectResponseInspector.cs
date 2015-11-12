@@ -61,7 +61,7 @@
             {
                 return this.ParseAuthorizationCodeResponse_NativeClient(oSession);
             }
-            else if (oSession.IsAuthorizationGrantResponse())
+            else if (oSession.IsAuthorizationGrantResponse() || oSession.IsAuthorizationCodeResponse_IdentityServerClient())
             {
                 return this.ParseAuthorizationGrantResponse(oSession);
             }

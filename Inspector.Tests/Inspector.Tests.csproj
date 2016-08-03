@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1E955C36-9F9C-4A4F-907B-622E9D958087}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OpenIDConnect.Inspector.Tests</RootNamespace>
+    <AssemblyName>OpenIDConnect.Inspector.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <OutputPath>tests</OutputPath>
+    <OutDir>$(BUILD_OUTPUT)\$(OutputPath)</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- External references -->
+    <Reference Include="Fiddler">
+      <HintPath>$(EXTERNAL)\Fiddler\Fiddler.exe</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Compression.Formats.v5.4">
+      <HintPath>$(EXTERNAL)\Fiddler\Xceed.Compression.Formats.v5.4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Compression.v5.4">
+      <HintPath>$(EXTERNAL)\Fiddler\Xceed.Compression.v5.4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.FileSystem.v5.4">
+      <HintPath>$(EXTERNAL)\Fiddler\Xceed.FileSystem.v5.4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Zip.v5.4">
+      <HintPath>$(EXTERNAL)\Fiddler\Xceed.Zip.v5.4.dll</HintPath>
+    </Reference>
+    <Reference Include="Standard">
+      <HintPath>$(EXTERNAL)\Fiddler\Standard.dll</HintPath>
+    </Reference>
+    <Reference Include="Be.Windows.Forms.HexBox">
+      <HintPath>$(EXTERNAL)\Fiddler\Be.Windows.Forms.HexBox.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\InspectorAssert.cs" />
+    <Compile Include="Common\SessionLoader.cs" />
+    <Compile Include="Common\StringExtensions.cs" />
+    <Compile Include="Common\TestDependencyResolver.cs" />
+    <Compile Include="OpenIDConnectRequestInspector\AssignSessionTestSuite.cs" />
+    <Compile Include="OpenIDConnectRequestInspector\ClearTestSuite.cs" />
+    <Compile Include="OpenIDConnectRequestInspector\InspectorTestSuite.cs" />
+    <Compile Include="OpenIDConnectRequestInspector\ScoreForSessionTestSuite.cs" />
+    <Compile Include="OpenIDConnectRequestInspector\TestableRequestInspector.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResponseInspector\AssignSessionTestSuite.cs" />
+    <Compile Include="ResponseInspector\ClearTestSuite.cs" />
+    <Compile Include="ResponseInspector\ScoreForSessionTestSuite.cs" />
+    <Compile Include="ResponseInspector\TestableResponseInspector.cs" />
+    <Compile Include="TestBootstrap.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Inspector\Inspector.csproj">
+      <Project>{ad4c38a3-eabf-4cae-8c24-829e2de69a9f}</Project>
+      <Name>Inspector</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="testSamples\*.saz">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

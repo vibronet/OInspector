@@ -9,6 +9,7 @@
     using Controls;
     using Fiddler;
     using Newtonsoft.Json;
+    using System;
 
     /// <summary>
     /// OpenID Connect response inspector.
@@ -48,7 +49,7 @@
         /// </summary>
         protected override bool CanHandleSession(Session oSession)
         {
-            return this.ScoreForSession(oSession) == OidcSessionScore;
+            return true;// this.ScoreForSession(oSession) == OidcSessionScore;
         }
 
         protected override NameValueCollection ParseSession(Session oSession)
@@ -64,6 +65,10 @@
             else if (oSession.IsAuthorizationGrantResponse() || oSession.IsAuthorizationCodeResponse_IdentityServerClient())
             {
                 return this.ParseAuthorizationGrantResponse(oSession);
+            }
+            else if (oSession?.oResponse?.headers.Any(h => h.Name == "Location") ?? false)
+            {
+                return this.ParseTokenResponse(oSession);
             }
 
             return null;
@@ -123,6 +128,34 @@
                 }
 
                 endInputOf = bodyString.IndexOf("/>", startInputOf);
+            }
+
+            return map;
+        }
+
+        private NameValueCollection ParseTokenResponse(Session oSession)
+        {
+            var map = new NameValueCollection();
+
+            var location = oSession.oResponse.headers.First(h => h.Name == "Location").Value;
+
+            if (location.ToLower().Contains("id_token="))
+            {
+                var url = new Uri(location);
+
+                var query = url.Query;
+
+                if (string.IsNullOrEmpty(query) && url.Fragment.StartsWith("#"))
+                    query = url.Fragment.Substring(1);
+
+                var prms = query.Split('&');
+
+                prms.ToList().ForEach(prm =>
+                {
+                    var kv = prm.Split('=');
+
+                    map.Add(kv[0], kv[1]);
+                });
             }
 
             return map;

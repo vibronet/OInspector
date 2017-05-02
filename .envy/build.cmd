@@ -2,9 +2,11 @@
 @call setlocal
 
 @if exist "%ProgramFiles(x86)%\MSBuild\12.0" set "MSBUILD=%ProgramFiles(x86)%\MSBuild\12.0\Bin\MSBuild.exe"
+@if exist "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0" set "MSBUILD=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\msbuild.exe"
 
 @if "%MSBUILD%" == "" (
     @echo "ERROR: Cannot find MSBuild on your machine in %ProgramFiles(x86)%\MSBuild\12.0\Bin\."
+    @echo "ERROR: Cannot find MSBuild on your machine in %ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\."
     @goto end
 )
 
